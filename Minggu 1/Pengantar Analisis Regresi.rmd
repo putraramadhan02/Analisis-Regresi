@@ -1,3 +1,17 @@
+# Pengenalan R
+## Objek Data
+### Vektor
+Vektor merupakan tipe sederhana dari objek dan setiap elemen memiliki mode yang sama.
 ```{r}
-
+a <- c(2, 4)
+b <- c("laki-laki", "perempuan")
+# Membuat pengulangan
+rep(a, 2)
+rep(a, each = 2)
+# Membuat suatu urutan
+seq(from = 3, to = 1)
+seq(from = 1, to = 2, by = 0.5)
+# is.vector() memeriksa suatu objek termasuk dalam vektor
+# as.vector() mengubah objek menjadi vector
+# operator (+, -, /, ^, %, dll)
 ```
