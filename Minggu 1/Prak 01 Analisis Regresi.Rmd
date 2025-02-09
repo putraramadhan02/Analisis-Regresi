@@ -1,0 +1,481 @@
+---
+title: "Pengenalan Analisis Regresi"
+author: "Elardian Putera Ramadhan (G1401231042)"
+date: "2025-02-06"
+output:
+  html_document:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: true
+    highlight: tango
+    code_folding: show
+    toc_depth: 5
+    number_sections: false
+    theme: flatly
+    toc: yes
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    fig_caption: true
+---
+
+------------------------------------------------------------------------
+
+# Pengenalan R {#Pengenalan-R}
+
+-   R merupakan serangkaian fasilitas *software* yang terintegrasi untuk memanipulasi data, perhitungan, dan tampilan grafik.
+
+-   *Open Source*
+
+-   Analisis statistika di R berupa serangkaian *steps* dengan hasil yang disimpan dalam suatu objek.
+
+## Objek Data dalam R {#Objek-Data-dalam-R .tabset}
+
+-   Vektor
+
+-   Matriks
+
+-   Array
+
+-   Factor
+
+-   List
+
+-   Data Frame
+
+### Vektor {#Vektor .tabset}
+
+Vektor merupakan tipe sederhana dari objek dan setiap elemen memiliki mode yang sama.
+
+Contoh:
+
+```{r}
+a <- c(2, 4)
+b <- c("laki-laki", "perempuan")
+```
+
+Perintah dalam vektor:
+
+```{r}
+#rep (pengulangan)
+rep(a, 2)
+rep(a, each = 2)
+
+#seq (membuat suatu urutan)
+seq(from = 3, to = 1)
+seq(from = 1, to = 2, by = 0.5)
+
+#is.vector (memeriksa suatu objek termasuk dalam vektor)
+#as.vector (mengubah objek menjadi vektor)
+#operator (+, -, /, ^, %, dll)
+```
+
+Akses elemen ke-i dalam suatu vektor
+
+Contoh:
+
+```{r}
+angka <- c(2, 3, 4, 1)
+angka
+names(angka) <- c("a", "b", "c", "d")
+```
+
+Untuk mengakses 2 dapat menggunakan syntax angka["a] atau angka[1]
+
+```{r}
+angka[2:3]
+angka[c(1, 4)]
+angka[angka < 2]
+angka[-2]
+```
+
+------------------------------------------------------------------------
+
+### Matriks {#Matriks .tabset}
+
+Matriks umumnya dibuat melalui vektor
+
+Contoh:
+
+```{r}
+Data <- matrix(c(1, 2, 1, 100, 102, 103), nrow = 2,
+               ncol = 3, byrow = TRUE,
+               dimnames = list(c("row1", "row2"), c("C.1", "C.2", "C.3")))
+Data
+```
+
+Perintah dalam vektor:
+
+```{r}
+#dim (mengetahui ukuran matriks)
+#rbind (menggabungkan terhadap baris)
+a <- c(2, 3, 4)
+b <- c(1, 0, 1)
+rbind(a, b)
+
+#cbind (menggabungkan terhadap kolom)
+a <- c(2, 3, 4)
+b <- c(1, 0, 1)
+cbind(a, b)
+```
+
+Akses elemen dalam suatu matriks
+
+Contoh:
+
+```{r}
+Data[1, 3]
+Data[, 1]
+Data[-1, -2]
+```
+
+------------------------------------------------------------------------
+
+### Faktor {#Faktor .tabset}
+
+Faktor merupakan bentuk khusus dari vektor dengan elemen kategorik dan memiliki level.
+
+Perintah dalam vektor:
+
+```{r}
+#factor (Konversi & mengatur level serta label)
+x <- c("apple", "banana", "apple", "orange")
+factor_x <- factor(x, levels = c("apple", "banana", "orange"), labels = c("A", "B", "C"))
+print(factor_x)
+```
+
+```{r}
+#as.factor (Konversi vektor menjadi faktor)
+x <- c("apple", "banana", "apple", "orange")
+factor_x <- as.factor(x)
+print(factor_x)
+```
+
+```{r}
+#is.factor (Memeriksa data apakah faktor)
+#Membuat vektor karakter
+colors <- c("red", "green", "blue")
+
+#Memeriksa apakah objek adalah faktor
+is_colors_factor <- is.factor(colors)
+print(is_colors_factor)
+```
+
+------------------------------------------------------------------------
+
+### List {#List .tabset}
+
+List merupakan struktur data yang dapat menyimpan berbagai jenis data dalam satu wadah.
+
+```{r}
+a <- c(2, 3, 4)
+dt <- c("b", "a", "a")
+Data <- matrix(c(1, 2, 1, 100, 102, 103), nrow = 2,
+               ncol = 3, byrow = FALSE,
+               dimnames = list(c("row1", "row2"), c("C.1", "C.2", "C.3")))
+list(a, dt, Data)
+```
+
+------------------------------------------------------------------------
+
+### Data Frame {#Data-Frame .tabset}
+
+Merupakan bentuk khusus dari list untuk menyimpan data dari berbagai tipe dalam bentuk matriks.
+
+Perintah yang umum digunakan dalam data frame:
+
+data.frame() -\> Membuat data frame baru dari vektor atau list
+
+as.data.frame() -\> Mengkonversi objek menjadi data frame
+
+read.table() -\> Membaca data dari file teks
+
+Contoh:
+
+```{r}
+dtf <- data.frame(Mahasiswa = c("Amir", "Budi", "Citra"), JK = c("L", "L", "P"))
+dtf
+dtf <- rbind(dtf, data.frame(Mahasiswa = "Intan", JK = "P"))
+dtf
+
+colnames(dtf) #untuk mengetahui nama-nama kolom
+length(dtf) #untuk mengetahui jumlah kolom
+dim(dtf) #untuk mengetahui jumlah dimensi
+```
+
+```{r}
+dtf[2] #atau dtf["JK] atau dtf$JK -> untuk mengakses semua elemen JK
+dtf[1, ] #untuk mengakses baris ke-1 semua kolom
+dtf[2, 1] <- "Bambang"
+dtf
+
+names(dtf)[1] <- "Nama" #mengganti nama kolom ke-1
+```
+
+------------------------------------------------------------------------
+
+### Input Data Dalam R {#Input-Data-Dalam-R .tabset}
+
+-   File .txt
+
+data \<- read.table("C:/..../namadata.txt", header = TRUE)
+
+Jika pemisah antar kolom (*delimiter*) bukan spasi maka dapat menggunakan syntax berikut
+
+data \<- read.delim("C:/..../namadata.txt", header = TRUE, sep = ";)
+
+-   File .csv
+
+data \<- read.csv("C:/..../namadata.csv", header = TRUE)
+
+Jika menggunakan delimiter ";" maka menggunakan read.csv2
+
+-   File .xlsx
+
+library(readxl)
+
+data \<- read_excel(path = "data/namadata.xlsx", col_names = TRUE)
+
+------------------------------------------------------------------------
+
+# Korelasi dan Regresi {#Korelasi-dan-Regresi}
+
+| KORELASI | REGRESI |
+|-------------------------------------|-----------------------------------|
+| Mengukur kekuatan atau derajat hubungan antara dua peubah | Menduga rata-rata satu peubah atas dasar nilai yang tetap dari peubah-peubah lain |
+| Dua peubah ini diperlakukan secara simetri | Ada asimetri bagaimana peubah tak bebas dan peubah bebas diperlakukan |
+
+| Koefisien Korelasi Populasi | Koefisien Korelasi Sampel |
+|--------------------------------------|----------------------------------|
+| $$
+\rho = \frac{\operatorname{cov}(X, Y)}{\sqrt{[\operatorname{var}(X)\operatorname{var}(Y)]}} = \frac{\operatorname{cov}(X, Y)}{\sigma_x\sigma_y}
+$$ | $$
+r = \frac{\sum x_i y_i}{\sqrt{(\sum x_i^2)(\sum y_i^2)}}
+$$ |
+|  | $$
+r = \frac{n\sum X_i Y_i - (\sum X_i)(\sum Y_i)}{\sqrt{[n\sum X_i^2 - (\sum X_i)^2][n\sum Y_i^2 - (\sum Y_i)^2]}}
+$$ |
+
+## Korelasi {#Korelasi .tabset}
+
+-   Mengukur keeratan hubungan linear antara dua peubah metrik.
+
+-   Tidak harus menggambarkan hubungan sebab-akibat.
+
+-   -1 ≤ *r* ≤ 1.
+
+-   *r* mendekati 1 atau -1, semakin erat hubungan linearnya.
+
+Kelemahan Koefisien Korelasi:
+
+-   Sangat peka terhadap pencilan (outlier).
+
+-   Tidak dapat mendeteksi hubungan non linear.
+
+```{r}
+#Input data
+harga <- c(245, 312, 279, 308, 199, 219, 405, 324, 319, 255)
+luas <- c(1400, 1600, 1700, 1875, 1100, 1550, 2350, 2450, 1425, 1700)
+
+#Membuat Scatterplot
+plot(x = luas, y = harga,
+     main = "Scatterplot Harga vs Luas Lantai", xlab = "Luas Lantai (m^2)",
+     ylab = "Harga Rumah (RpJuta)")
+```
+
+```{r}
+#Koefisien Korelasi
+cor(luas, harga, method = "pearson")
+```
+
+```{r}
+#Matriks Korelasi
+df <- data.frame(luas, harga)
+korelasi <- cor(df)
+korelasi
+```
+
+```{r}
+#install.packages("corrplot")
+library(corrplot)
+corrplot(corr = korelasi, method = "number", type = "upper")
+```
+
+```{r}
+#Uji Signifikansi Koefisien Korelasi
+#Hipotesis H0: rho = 0 vs H1: rho ≠ 0
+cor.test(x = luas, y = harga, alternative = "two.sided", method = "pearson", exact = NULL, conf.level = 0.95)
+```
+
+Nilai p (p-value = 0.01039): Karena nilai p \< 0.05, kita menolak hipotesis nol dan menyimpulkan bahwa ada korelasi yang signifikan antara Luas Lantai dan Harga Rumah
+
+## Analisis Regresi {#Analisis-Regresi .tabset}
+
+Model Deterministik vs Stokhastik
+
+Misalkan diketahui:
+
+-   $X = 1$, $Y = 3$
+
+-   $X = 4$, $Y = 9$
+
+Diberikan fungsi deterministik:
+
+$$ f(X) = 1 + 2X $$
+
+**Pertanyaan:**
+
+-   Berapa $Y$ jika $X = 2$? → Pasti $Y = 5$
+
+-   Berapa $Y$ jika $X = 3$? → Pasti $Y = 7$
+
+100% kita percaya bahwa nilai $Y = 5$ dan $Y = 7$ adalah satu-satunya nilai untuk $X = 2$ dan $X = 3$.
+
+-   $Y$ nilainya pasti, bebas dari error
+-   $Y$ bukan peubah acak
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+# Data
+data <- data.frame(
+  X = c(1, 2, 3, 4),
+  Y = c(3, 5, 7, 9)
+)
+
+# Scatterplot
+ggplot(data, aes(x = X, y = Y)) +
+  geom_point() +
+  geom_line() +
+  labs(
+    x = "X",
+    y = "Y",
+    title = "Scatterplot of Y vs X"
+  ) +
+  theme_minimal()
+```
+
+Untuk setiap dosis pupuk yang dicobakan, banyaknya padi yang dihasilkan diamati sebanyak 3 kali. Hasilnya pada tabel di samping.
+
+| X   | Y   |
+|-----|-----|
+| 1   | 3.0 |
+| 1   | 3.4 |
+| 1   | 2.8 |
+| 2   | 5.0 |
+| 2   | 5.4 |
+| 2   | 4.7 |
+| 3   | 7.0 |
+| 3   | 7.3 |
+| 3   | 6.6 |
+| 4   | 9.0 |
+| 4   | 9.3 |
+| 4   | 8.5 |
+
+Ternyata hasilnya (Y) tidak pasti.
+
+→ mengandung error
+
+→ Y Peubah Acak.
+
+MODEL STOKHASTIK
+
+$$
+Y = 1 + 2x + \varepsilon, \, \varepsilon = \text{error}
+$$
+
+$$
+y_i = 1 + 2x_i + \varepsilon_i, \, \varepsilon_i = \text{error ke-} i
+$$
+
+```{r}
+data <- data.frame(
+  X = c(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4),
+  Y = c(3, 3.4, 2.8, 5, 5.4, 4.7, 7, 7.3, 6.6, 9, 9.3, 8.5)
+)
+
+# Scatterplot
+ggplot(data, aes(x = X, y = Y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(
+    x = "X",
+    y = "Y",
+    title = "Scatterplot of Y vs X"
+  ) +
+  theme_minimal()
+```
+
+# Latihan Soal {#Latihan-Soal}
+
+Diduga ada hubungan antara jumlah halaman buku yang digunakan dengan harga jual bukunya. Untuk menjawab dugaan tersebut dipilih sampel dari delapan buku yang dijual di toko tersebut.
+
+------------------------------------------------------------------------
+
+Pertanyaan:
+
+1.  Buatlah **scatterplot** dan hitung **koefisien korelasinya**!
+
+2.  Apakah korelasi tersebut **signifikan**? Jelaskan!
+
+------------------------------------------------------------------------
+
+Data:
+
+| Book               | Page | Price (\$) |
+|--------------------|------|------------|
+| Intro to History   | 500  | 84         |
+| Basic Algebra      | 700  | 75         |
+| Intro to Psyc      | 800  | 99         |
+| Intro to Sociology | 600  | 72         |
+| Bus. Mngt          | 400  | 69         |
+| Intro to Biology   | 500  | 81         |
+| Fund. of Jazz      | 600  | 63         |
+| Princ. of Nursing  | 800  | 93         |
+
+```{r}
+#Data
+buku <- data.frame(
+  Book = c("Intro to History", "Basic Algebra", "Intro to Psyc", 
+           "Intro to Sociology", "Bus. Mngt", "Intro to Biology",
+           "Fund. of Jazz", "Princ. of Nursing"),
+  Page = c(500, 700, 800, 600, 400, 500, 600, 800),
+  Price = c(84, 75, 99, 72, 69, 81, 63, 93)
+)
+buku
+```
+
+```{r}
+#Scatterplot
+ggplot(buku, aes(x = Page, y = Price)) +
+  geom_point(color = "blue", size = 3) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "Hubungan Jumlah Halaman dan Harga Buku",
+       x = "Jumlah Halaman",
+       y = "Harga ($)") +
+  theme_minimal()
+```
+
+```{r}
+#Koefisien Korelasi
+cor_coef <- cor(buku$Page, buku$Price, method = "pearson")
+cat("Koefisien Korelasi Pearson =", round(cor_coef, 3))
+```
+
+**Hasil:**
+
+Koefisien korelasi Pearson sebesar r round(cor_coef, 3) menunjukkan hubungan positif antara jumlah halaman dan harga buku.
+
+```{r}
+#Uji Signifikansi Koefisien Korelasi
+cor_test <- cor.test(buku$Page, buku$Price)
+cat("Hasil Uji Korelasi:\n")
+cat("t-value =", round(cor_test$statistic, 3), "\n")
+cat("p-value =", format.pval(cor_test$p.value, eps = 0.001), "\n")
+cat("Derajat Kebebasan (df) =", cor_test$parameter)
+```
+
+**Interpretasi:**
+
+Dengan p-value r format.pval(cor_test\$p.value, digits = 3) (\> 0.05), kita gagal menolak hipotesis nol. Artinya, korelasi antara jumlah halaman dan harga buku tidak signifikan secara statistik pada tingkat kepercayaan 95%.
